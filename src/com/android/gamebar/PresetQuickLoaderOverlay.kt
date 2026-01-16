@@ -91,7 +91,7 @@ class PresetQuickLoaderOverlay(private val context: Context) {
         
         // Close button
         val closeButton = TextView(context).apply {
-            text = "✕ Close"
+            text = "Close"
             setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
             setTextColor(Color.parseColor("#FF5252"))
             gravity = Gravity.CENTER

@@ -56,10 +56,10 @@ class LogAnalyticsFragment : Fragment() {
         
         // Set session info
         sessionInfoText.text = buildString {
-            appendLine("📅 ${analyticsData.sessionDate}")
-            appendLine("⏱️  ${analyticsData.sessionDuration}")
-            appendLine("📊 ${analyticsData.totalSamples} samples")
-            append("📁 $logFileName")
+            appendLine("Date: ${analyticsData.sessionDate}")
+            appendLine("Duration: ${analyticsData.sessionDuration}")
+            appendLine("Samples: ${analyticsData.totalSamples}")
+            append("File: $logFileName")
         }
         
         // Set FPS statistics

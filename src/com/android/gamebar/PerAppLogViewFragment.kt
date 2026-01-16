@@ -224,10 +224,10 @@ class PerAppLogViewFragment : Fragment() {
         
         // Set session info
         sessionInfoText.text = buildString {
-            appendLine("📅 ${analytics.sessionDate}")
-            appendLine("⏱️  ${analytics.sessionDuration}")
-            appendLine("📊 ${analytics.totalSamples} samples")
-            append("📁 ${logFile.name}")
+            appendLine("Date: ${analytics.sessionDate}")
+            appendLine("Duration: ${analytics.sessionDuration}")
+            appendLine("Samples: ${analytics.totalSamples}")
+            append("File: ${logFile.name}")
         }
         
         // Set FPS statistics
@@ -345,10 +345,10 @@ class PerAppLogViewFragment : Fragment() {
     ) {
         val popup = android.widget.PopupMenu(requireContext(), anchorView)
         popup.menu.apply {
-            add(0, 1, 1, "📊 Export Data (CSV)")
-            add(0, 2, 2, "📸 Save Graphics (PNG)")
-            add(0, 3, 3, "📤 Share Data (CSV)")
-            add(0, 4, 4, "🖼️ Share Graphics (PNG)")
+            add(0, 1, 1, "Export Data (CSV)")
+            add(0, 2, 2, "Save Graphics (PNG)")
+            add(0, 3, 3, "Share Data (CSV)")
+            add(0, 4, 4, "Share Graphics (PNG)")
         }
         
         popup.setOnMenuItemClickListener { item ->
@@ -438,15 +438,15 @@ class PerAppLogViewFragment : Fragment() {
                     intent.putExtra(Intent.EXTRA_STREAM, uri)
                     intent.putExtra(Intent.EXTRA_SUBJECT, "GameBar Performance Stats - $appName")
                     intent.putExtra(Intent.EXTRA_TEXT, buildString {
-                        appendLine("🎮 GameBar Performance Stats")
+                        appendLine("GameBar Performance Stats")
                         appendLine("")
-                        appendLine("📱 App: $appName")
-                        appendLine("📅 Session: ${analytics.sessionDate}")
-                        appendLine("⏱️ Duration: ${analytics.sessionDuration}")
+                        appendLine("App: $appName")
+                        appendLine("Session: ${analytics.sessionDate}")
+                        appendLine("Duration: ${analytics.sessionDuration}")
                         appendLine("")
-                        appendLine("🎯 FPS: Avg ${String.format("%.1f", analytics.fpsStats.avgFps)} | Max ${String.format("%.1f", analytics.fpsStats.maxFps)}")
-                        appendLine("✨ Smoothness: ${String.format("%.1f%%", analytics.fpsStats.smoothnessPercentage)}")
-                        appendLine("🔥 1% Low: ${String.format("%.1f", analytics.fpsStats.fps1PercentLow)} FPS")
+                        appendLine("FPS: Avg ${String.format("%.1f", analytics.fpsStats.avgFps)} | Max ${String.format("%.1f", analytics.fpsStats.maxFps)}")
+                        appendLine("Smoothness: ${String.format("%.1f%%", analytics.fpsStats.smoothnessPercentage)}")
+                        appendLine("1% Low: ${String.format("%.1f", analytics.fpsStats.fps1PercentLow)} FPS")
                     })
                     intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                     
