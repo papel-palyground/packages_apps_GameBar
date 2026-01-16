@@ -7,8 +7,15 @@
 <resources>
     <color name="ic_launcher_background">@android:color/system_accent1_600</color>
     <color name="ic_gamebar_launcher_background">#141B2D</color>
-    
+
     <!-- Default colors for ColorPicker -->
     <color name="gamebar_default_title_color">#FFFFFFFF</color>
     <color name="gamebar_default_value_color">#FF4CAF50</color>
+
+    <!-- Slider colors (local definitions for SettingsLib compatibility) -->
+    <color name="settingslib_expressive_color_slider_track_active">@android:color/system_accent1_600</color>
+    <color name="settingslib_expressive_color_slider_track_inactive">
+        @android:color/system_neutral2_200</color>
+    <color name="settingslib_expressive_color_slider_thumb">@android:color/system_accent1_600</color>
+    <color name="settingslib_expressive_color_slider_halo">@android:color/system_accent1_100</color>
 </resources>
