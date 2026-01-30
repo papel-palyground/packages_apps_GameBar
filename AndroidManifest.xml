@@ -6,11 +6,7 @@
 -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.android.gamebar"
-    android:versionCode="13200"
-    android:versionName="13.2.0"
-    android:sharedUserId="android.uid.system">
+    xmlns:tools="http://schemas.android.com/tools" package="com.android.gamebar" android:versionCode="13200" android:versionName="13.2.0" android:sharedUserId="android.uid.system">
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -32,58 +28,29 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
 
-    <uses-sdk
-        android:minSdkVersion="33"
-        android:targetSdkVersion="35"/>
+    <uses-sdk android:minSdkVersion="33" android:targetSdkVersion="35"/>
 
-    <application
-        android:label="@string/app_title"
-        android:icon="@mipmap/ic_gamebar_launcher"
-        android:persistent="true"
-        android:defaultToDeviceProtectedStorage="true"
-        android:directBootAware="true"
-        android:theme="@style/Theme.SubSettingsBase.Expressive">
+    <application android:label="@string/app_title" android:icon="@mipmap/ic_gamebar_launcher" android:persistent="true" android:defaultToDeviceProtectedStorage="true" android:directBootAware="true" android:theme="@style/Theme.GameBar">
 
-        <provider
-            android:name="androidx.startup.InitializationProvider"
-            android:authorities="${applicationId}.androidx-startup"
-            tools:replace="android:authorities"/>
+        <provider android:name="androidx.startup.InitializationProvider" android:authorities="${applicationId}.androidx-startup" tools:replace="android:authorities"/>
 
-    	<!-- TileHandler activity -->
-        <activity
-            android:name=".utils.TileHandlerActivity"
-            android:exported="true"
-            android:noHistory="true"
-            android:theme="@android:style/Theme.NoDisplay">
+        <!-- TileHandler activity -->
+        <activity android:name=".utils.TileHandlerActivity" android:exported="true" android:noHistory="true" android:theme="@android:style/Theme.NoDisplay">
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE_PREFERENCES" />
             </intent-filter>
         </activity>
 
         <!-- GameBar Overlay -->
-        <activity
-            android:name=".GameBarSettingsActivity"
-            android:label="@string/app_title"
-            android:icon="@mipmap/ic_gamebar_launcher"
-            android:theme="@style/Theme.SubSettingsBase.Expressive"
-            android:exported="true">
+        <activity android:name=".GameBarSettingsActivity" android:label="@string/app_title" android:icon="@mipmap/ic_gamebar_launcher" android:theme="@style/Theme.GameBar" android:exported="true">
             <intent-filter>
                 <action android:name="com.android.settings.action.IA_SETTINGS" />
             </intent-filter>
-            <meta-data
-                android:name="com.android.settings.category"
-                android:value="com.android.settings.category.ia.system" />
-            <meta-data
-                android:name="com.android.settings.icon"
-                android:resource="@drawable/ic_gamebar" />    
+            <meta-data android:name="com.android.settings.category" android:value="com.android.settings.category.ia.system" />
+            <meta-data android:name="com.android.settings.icon" android:resource="@drawable/ic_gamebar" />
         </activity>
 
-        <activity-alias
-            android:name="com.android.gamebar.GameBarLauncher"
-            android:targetActivity=".GameBarSettingsActivity"
-            android:label="@string/app_title"
-            android:icon="@mipmap/ic_gamebar_launcher"
-            android:exported="true">
+        <activity-alias android:name="com.android.gamebar.GameBarLauncher" android:targetActivity=".GameBarSettingsActivity" android:label="@string/app_title" android:icon="@mipmap/ic_gamebar_launcher" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -91,83 +58,45 @@
         </activity-alias>
 
         <!-- GameBar Overlay Tile Service -->
-        <service
-            android:name=".GameBarTileService"
-            android:label="@string/game_bar_tile_label"
-            android:icon="@drawable/ic_gamebar"
-            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE"
-            android:exported="true">
+        <service android:name=".GameBarTileService" android:label="@string/game_bar_tile_label" android:icon="@drawable/ic_gamebar" android:permission="android.permission.BIND_QUICK_SETTINGS_TILE" android:exported="true">
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE" />
             </intent-filter>
-            <meta-data
-                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
-                android:value="true" />
+            <meta-data android:name="android.service.quicksettings.TOGGLEABLE_TILE" android:value="true" />
         </service>
 
         <!-- GameBar Overlay Monitor Service -->
-        <service
-            android:name=".GameBarMonitorService"
-            android:exported="false" />
+        <service android:name=".GameBarMonitorService" android:exported="false" />
 
         <!-- Per-App Logging Service -->
-        <service
-            android:name=".PerAppLogService"
-            android:exported="false" />
+        <service android:name=".PerAppLogService" android:exported="false" />
 
         <!-- GameBar BootReceiver -->
-        <receiver
-            android:name=".GameBarBootReceiver"
-            android:exported="true"
-            android:enabled="true"
-            android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
+        <receiver android:name=".GameBarBootReceiver" android:exported="true" android:enabled="true" android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
                 <category android:name="android.intent.category.DEFAULT" />
-             </intent-filter>
+            </intent-filter>
         </receiver>
 
-        <activity
-        android:name=".GameBarPerAppConfigActivity"
-        android:exported="false"
-        android:theme="@style/Theme.SubSettingsBase.Expressive" />
+        <activity android:name=".GameBarPerAppConfigActivity" android:exported="false" android:theme="@style/Theme.SubSettingsBase.Expressive" />
 
-    <activity
-        android:name=".GameBarLogActivity"
-        android:exported="false"
-        android:theme="@style/Theme.SubSettingsBase.Expressive" />
+        <activity android:name=".GameBarLogActivity" android:exported="false" android:theme="@style/Theme.SubSettingsBase.Expressive" />
 
-    <activity
-        android:name=".PerAppLogViewActivity"
-        android:exported="false"
-        android:theme="@style/Theme.SubSettingsBase.Expressive" />
+        <activity android:name=".PerAppLogViewActivity" android:exported="false" android:theme="@style/Theme.SubSettingsBase.Expressive" />
 
-    <activity
-        android:name=".LogAnalyticsActivity"
-        android:exported="false"
-        android:theme="@style/Theme.SubSettingsBase.Expressive" />
+        <activity android:name=".LogAnalyticsActivity" android:exported="false" android:theme="@style/Theme.SubSettingsBase.Expressive" />
 
-    <activity
-        android:name=".GameBarFontSelectorActivity"
-        android:exported="false"
-        android:theme="@style/Theme.SubSettingsBase.Expressive" />
+        <!-- GameBarFontSelectorActivity removed -->
+        <!-- <activity android:name=".GameBarFontSelectorActivity" android:exported="false" android:theme="@style/Theme.SubSettingsBase.Expressive" /> -->
 
-    <activity
-        android:name=".PresetManagementActivity"
-        android:exported="false"
-        android:theme="@style/Theme.SubSettingsBase.Expressive" />
+        <activity android:name=".PresetManagementActivity" android:exported="false" android:theme="@style/Theme.SubSettingsBase.Expressive" />
 
-<!-- FileProvider for sharing log files -->
-    <provider
-        android:name="androidx.core.content.FileProvider"
-        android:authorities="${applicationId}.fileprovider"
-        android:exported="false"
-        android:grantUriPermissions="true">
-        <meta-data
-            android:name="android.support.FILE_PROVIDER_PATHS"
-            android:resource="@xml/file_provider_paths" />
-    </provider>
+        <!-- FileProvider for sharing log files -->
+        <provider android:name="androidx.core.content.FileProvider" android:authorities="${applicationId}.fileprovider" android:exported="false" android:grantUriPermissions="true">
+            <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/file_provider_paths" />
+        </provider>
 
     </application>
 </manifest>

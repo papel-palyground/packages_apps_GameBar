@@ -11,4 +11,14 @@
     <item name="android:layout_height">315dp</item>
   </style>
 
+  <!-- Base application theme. -->
+  <style name="Theme.GameBar" parent="Theme.Material3.DayNight.NoActionBar">
+    <!-- Customize your theme here. -->
+    <item name="colorPrimary">@color/settingslib_expressive_color_slider_track_active</item>
+    <item name="colorOnPrimary">#FFFFFF</item>
+    <item name="colorSecondary">@color/settingslib_expressive_color_slider_track_inactive</item>
+    <item name="android:windowLightStatusBar">true</item>
+    <item name="android:statusBarColor">@android:color/transparent</item>
+  </style>
+
 </resources>
