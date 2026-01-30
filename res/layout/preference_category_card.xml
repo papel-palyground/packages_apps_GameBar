@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     SPDX-FileCopyrightText: 2025 kenway214
+     SPDX-License-Identifier: Apache-2.0
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:layout_marginHorizontal="16dp" android:layout_marginTop="8dp" android:layout_marginBottom="4dp">
+
+    <!-- Category Title -->
+    <TextView android:id="@android:id/title" android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingStart="16dp" android:paddingEnd="16dp" android:paddingTop="16dp" android:paddingBottom="8dp" android:textAppearance="?attr/textAppearanceTitleSmall" android:textColor="?android:attr/colorAccent" android:textStyle="bold" />
+
+    <!-- Card Container for Preferences -->
+    <LinearLayout android:id="@android:id/widget_frame" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:background="@drawable/bg_preference_card" android:paddingVertical="8dp" android:clipToPadding="false" />
+
+</LinearLayout>
