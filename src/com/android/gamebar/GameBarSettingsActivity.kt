@@ -35,6 +35,11 @@ class GameBarSettingsActivity : AppCompatActivity() {
         
         val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        
+        toolbar.setNavigationOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
+        }
         
         val collapsingToolbar = findViewById<com.google.android.material.appbar.CollapsingToolbarLayout>(R.id.collapsing_toolbar)
         collapsingToolbar.title = getString(R.string.game_bar_title)
