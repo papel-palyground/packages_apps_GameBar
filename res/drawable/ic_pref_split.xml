@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     SPDX-FileCopyrightText: 2025 kenway214
+     SPDX-License-Identifier: Apache-2.0
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android" android:width="24dp" android:height="24dp" android:viewportWidth="24" android:viewportHeight="24">
+    <path android:fillColor="@color/icon_on_primary" android:pathData="M4,18h2v-2H4v2zM4,14h2v-2H4v2zM4,10h2V8H4v2zM4,6h2V4H4v2zM8,18h12v-2H8v2zM8,14h12v-2H8v2zM8,10h12V8H8v2zM8,6h12V4H8v2z"/>
+</vector>

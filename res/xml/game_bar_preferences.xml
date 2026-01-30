@@ -39,7 +39,7 @@
     </com.android.gamebar.ExpandablePreferenceCategory>
 
     <com.android.gamebar.ExpandablePreferenceCategory android:key="category_fps_method" android:title="FPS Measurement Method" android:dependency="game_bar_fps_enable">
-        <ListPreference android:key="game_bar_fps_method" android:title="Select FPS Method" android:summary="Choose between the New API method (default) and Legacy Sysfs" android:defaultValue="new" android:entries="@array/game_bar_fps_method_entries" android:entryValues="@array/game_bar_fps_method_values" />
+        <ListPreference android:key="game_bar_fps_method" android:title="Select FPS Method" android:summary="Choose between the New API method (default) and Legacy Sysfs" android:icon="@drawable/ic_pref_fps_method_circle" android:defaultValue="new" android:entries="@array/game_bar_fps_method_entries" android:entryValues="@array/game_bar_fps_method_values" />
     </com.android.gamebar.ExpandablePreferenceCategory>
 
     <com.android.gamebar.ExpandablePreferenceCategory android:key="category_customization" android:title="Customization" android:dependency="game_bar_enable">
@@ -70,7 +70,7 @@
 
     <com.android.gamebar.ExpandablePreferenceCategory android:key="category_split_config" android:title="Split Config" android:dependency="game_bar_enable">
 
-        <ListPreference android:key="game_bar_split_mode" android:title="Split Mode" android:summary="Choose Side-by-Side or Stacked arrangement" android:defaultValue="side_by_side" android:entries="@array/game_bar_split_mode_entries" android:entryValues="@array/game_bar_split_mode_values" />
+        <ListPreference android:key="game_bar_split_mode" android:title="Split Mode" android:summary="Choose Side-by-Side or Stacked arrangement" android:icon="@drawable/ic_pref_split_circle" android:defaultValue="side_by_side" android:entries="@array/game_bar_split_mode_entries" android:entryValues="@array/game_bar_split_mode_values" />
     </com.android.gamebar.ExpandablePreferenceCategory>
 
     <com.android.gamebar.ExpandablePreferenceCategory android:key="category_gesture_controls" android:title="Overlay Gesture Controls" android:dependency="game_bar_enable">
@@ -116,7 +116,7 @@
 
         <Preference android:key="game_bar_open_external_log" android:title="Open External Log" android:summary="Open a saved CSV log file" />
 
-        <Preference android:key="game_bar_user_guide" android:title="User Guide" android:summary="Read the official user guide" />
+        <Preference android:key="game_bar_user_guide" android:title="User Guide" android:summary="Read the official user guide" android:icon="@drawable/ic_pref_about_circle" />
 
     </com.android.gamebar.ExpandablePreferenceCategory>
 
