@@ -355,7 +355,8 @@ class GameBar private constructor(context: Context) {
             applyPosition(layoutParams!!, position)
         }
 
-        overlayView = LayoutInflater.from(context).inflate(R.layout.gamebar_overlay_panel, null)
+    val themeContext = android.view.ContextThemeWrapper(context, R.style.Theme_GameBar)
+    overlayView = LayoutInflater.from(themeContext).inflate(R.layout.gamebar_overlay_panel, null)
         rootLayout = overlayView as LinearLayout
         applySplitMode()
         

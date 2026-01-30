@@ -20,6 +20,7 @@
     <color name="settingslib_expressive_color_slider_halo">@android:color/system_accent1_100</color>
 
     <!-- Overlay Colors -->
-    <color name="gamebar_panel_background_color">#CC1B1B1F</color>
-    <color name="gamebar_panel_stroke_color">#33FFFFFF</color>
+    <!-- Overlay Colors (Unused, using system theme attributes) -->
+    <!-- <color name="gamebar_panel_background_color">#CC1B1B1F</color> -->
+    <!-- <color name="gamebar_panel_stroke_color">#33FFFFFF</color> -->
 </resources>
