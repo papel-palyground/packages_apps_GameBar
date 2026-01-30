@@ -23,4 +23,11 @@
     <!-- Icon Background Colors (Monet Palette) -->
     <color name="icon_bg_primary">@android:color/system_accent1_600</color>
     <color name="icon_on_primary">@android:color/system_accent1_50</color>
+
+    <!-- Overlay Colors (Monet Glass Effect) -->
+    <color name="overlay_bg_start">#E64A4458</color>
+    <color name="overlay_bg_end">#E665558F</color>
+    <color name="overlay_border">#4DD0BCFF</color>
+    <color name="overlay_label">@android:color/system_accent1_200</color>
+    <color name="overlay_divider">#33D0BCFF</color>
 </resources>
