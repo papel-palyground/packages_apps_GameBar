@@ -19,8 +19,8 @@
     <color name="settingslib_expressive_color_slider_thumb">@android:color/system_accent1_600</color>
     <color name="settingslib_expressive_color_slider_halo">@android:color/system_accent1_100</color>
 
-    <!-- Overlay Colors -->
-    <!-- Overlay Colors (Unused, using system theme attributes) -->
-    <!-- <color name="gamebar_panel_background_color">#CC1B1B1F</color> -->
-    <!-- <color name="gamebar_panel_stroke_color">#33FFFFFF</color> -->
+
+    <!-- Icon Background Colors (Monet Palette) -->
+    <color name="icon_bg_primary">@android:color/system_accent1_600</color>
+    <color name="icon_on_primary">@android:color/system_accent1_50</color>
 </resources>
