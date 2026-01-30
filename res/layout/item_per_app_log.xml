@@ -3,63 +3,24 @@
      SPDX-FileCopyrightText: 2025 kenway214
      SPDX-License-Identifier: Apache-2.0
 -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:padding="12dp"
-    android:gravity="center_vertical"
-    android:background="?android:attr/selectableItemBackground">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:padding="12dp" android:layout_marginHorizontal="16dp" android:layout_marginBottom="8dp" android:gravity="center_vertical" android:background="@drawable/bg_preference_card" android:foreground="?android:attr/selectableItemBackground">
 
-    <ImageView
-        android:id="@+id/iv_app_icon"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginEnd="12dp"
-        android:scaleType="centerInside" />
+    <!-- App Icon -->
+    <ImageView android:id="@+id/iv_app_icon" android:layout_width="40dp" android:layout_height="40dp" android:layout_marginEnd="16dp" android:scaleType="centerInside" />
 
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="vertical">
+    <!-- Text content -->
+    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_app_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:textSize="16sp"
-            android:textColor="@color/app_name_text_selector"
-            android:maxLines="1"
-            android:ellipsize="end" />
+        <TextView android:id="@+id/tv_app_name" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textAppearance="?attr/textAppearanceBodyLarge" android:textColor="?android:attr/textColorPrimary" android:maxLines="1" android:ellipsize="end" />
 
-        <TextView
-            android:id="@+id/tv_package_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="12sp"
-            android:textColor="@color/app_package_text_selector"
-            android:maxLines="1"
-            android:ellipsize="end" />
+        <TextView android:id="@+id/tv_package_name" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:textAppearance="?attr/textAppearanceBodySmall" android:textColor="?android:attr/textColorSecondary" android:maxLines="1" android:ellipsize="end" />
+
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/iv_view_logs"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_marginEnd="8dp"
-        android:src="@drawable/ic_article_shortcut"
-        android:background="?android:attr/selectableItemBackgroundBorderless"
-        android:clickable="true"
-        android:focusable="true"
-        android:padding="4dp"
-        android:scaleType="centerInside" />
+    <!-- View logs button -->
+    <ImageView android:id="@+id/iv_view_logs" android:layout_width="32dp" android:layout_height="32dp" android:layout_marginEnd="8dp" android:src="@drawable/ic_article_shortcut" android:tint="?android:attr/textColorSecondary" android:background="?android:attr/selectableItemBackgroundBorderless" android:clickable="true" android:focusable="true" android:padding="4dp" android:scaleType="centerInside" android:contentDescription="@null" />
 
-    <Switch
-        android:id="@+id/switch_per_app_logging"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp" />
+    <!-- Material Switch -->
+    <com.google.android.material.materialswitch.MaterialSwitch android:id="@+id/switch_per_app_logging" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="8dp" />
 
 </LinearLayout>
