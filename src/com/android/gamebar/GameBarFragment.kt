@@ -78,6 +78,12 @@ class GameBarFragment : SettingsBasePreferenceFragment() {
     private var overlayFormatPref: ListPreference? = null
     private var ramSpeedSwitch: SwitchPreferenceCompat? = null
     private var ramTempSwitch: SwitchPreferenceCompat? = null
+    
+    // New preferences
+    private var launcherIconSwitch: SwitchPreferenceCompat? = null
+    private var logMonitorPref: Preference? = null
+    private var externalLogPref: Preference? = null
+    private var userGuidePref: Preference? = null
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.game_bar_preferences, rootKey)
@@ -138,7 +144,57 @@ class GameBarFragment : SettingsBasePreferenceFragment() {
         
         setupGesturePrefListeners()
         setupStylePrefListeners()
+        setupGesturePrefListeners()
+        setupStylePrefListeners()
         setupExpandableCategories()
+        setupAboutSupportPrefs()
+    }
+    
+    private fun setupAboutSupportPrefs() {
+        launcherIconSwitch = findPreference("show_launcher_icon")
+        logMonitorPref = findPreference("game_bar_log_monitor")
+        externalLogPref = findPreference("game_bar_open_external_log")
+        userGuidePref = findPreference("game_bar_user_guide")
+        
+        // Sync launcher icon switch with current state (stored in shared prefs by activity logic mainly, 
+        // but here we can just rely on the preference persistence or sync with activity)
+        // actually the persistence is automatic for SwitchPreferenceCompat, we just need to react to changes.
+        // But we need to check if the component is actually enabled/disabled to be in sync?
+        // The previous implementation used a menu item checked state based on prefs.
+        // So standard preference behavior should work.
+        
+        launcherIconSwitch?.setOnPreferenceChangeListener { _, newValue ->
+            val enabled = newValue as Boolean
+            (activity as? GameBarSettingsActivity)?.setLauncherIconEnabled(enabled)
+            true
+        }
+        
+        logMonitorPref?.setOnPreferenceClickListener {
+            try {
+                startActivity(Intent(requireContext(), GameBarLogActivity::class.java))
+            } catch (e: Exception) {
+                Toast.makeText(requireContext(), "Error: ${e.message}", Toast.LENGTH_LONG).show()
+                e.printStackTrace()
+            }
+            true
+        }
+        
+        externalLogPref?.setOnPreferenceClickListener {
+            (activity as? GameBarSettingsActivity)?.openExternalLogFile()
+            true
+        }
+        
+        userGuidePref?.setOnPreferenceClickListener {
+            try {
+                val url = getString(R.string.game_bar_user_guide_url)
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                startActivity(intent)
+            } catch (e: Exception) {
+                Toast.makeText(requireContext(), "Unable to open user guide: ${e.message}", Toast.LENGTH_LONG).show()
+                e.printStackTrace()
+            }
+            true
+        }
     }
     
     private fun setupExpandableCategories() {
@@ -162,11 +218,19 @@ class GameBarFragment : SettingsBasePreferenceFragment() {
             true
         }
         
+        perAppConfigPref?.setOnPreferenceClickListener {
+            startActivity(Intent(requireContext(), GameBarPerAppConfigActivity::class.java))
+            true
+        }
+        
+        // Font selector removed
+        /*
         val fontSelectorPref: Preference? = findPreference("game_bar_font_selector")
         fontSelectorPref?.setOnPreferenceClickListener {
             startActivity(Intent(requireContext(), GameBarFontSelectorActivity::class.java))
             true
         }
+        */
         
         // Preset management preferences
         setupPresetPreferences()

@@ -24,6 +24,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.view.LayoutInflater
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -101,7 +102,8 @@ class GameBar private constructor(context: Context) {
     private var paddingDp = 8
     private var titleColorHex = "#FFFFFF"
     private var valueColorHex = "#FFFFFF"
-    private var customTypeface: Typeface? = null
+    private var valueColorHex = "#FFFFFF"
+    // private var customTypeface: Typeface? = null // Removed
     private var overlayFormat = "full"
     private var position = "top_center"
     private var splitMode = "side_by_side"
@@ -159,8 +161,9 @@ class GameBar private constructor(context: Context) {
     private var initialTouchY = 0f
 
     init {
-        bgDrawable = GradientDrawable()
-        applyBackgroundStyle()
+        // bgDrawable will be initialized when overlay is shown (inflated)
+        // bgDrawable = GradientDrawable()
+        // applyBackgroundStyle()
         
         gestureDetector = GestureDetector(context, object : GestureDetector.SimpleOnGestureListener() {
             override fun onDoubleTap(e: MotionEvent): Boolean {
@@ -292,9 +295,9 @@ class GameBar private constructor(context: Context) {
         val valueColorHex = String.format("#%06X", 0xFFFFFF and valueColorInt)
         updateValueColor(valueColorHex)
         
-        // Load custom font
-        val fontPath = prefs.getString("game_bar_font_path", "default") ?: "default"
-        loadCustomFont(fontPath)
+        // Font selection removed
+        // val fontPath = prefs.getString("game_bar_font_path", "default") ?: "default"
+        // loadCustomFont(fontPath)
         
         updateOverlayFormat(prefs.getString("game_bar_format", "full") ?: "full")
         updateUpdateInterval(prefs.getString("game_bar_update_interval", "1000") ?: "1000")
@@ -352,14 +355,14 @@ class GameBar private constructor(context: Context) {
             applyPosition(layoutParams!!, position)
         }
 
-        overlayView = LinearLayout(context).apply {
-            layoutParams = LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-            )
-        }
+        overlayView = LayoutInflater.from(context).inflate(R.layout.gamebar_overlay_panel, null)
         rootLayout = overlayView as LinearLayout
         applySplitMode()
+        
+        // Initialize bgDrawable from the inflated XML background
+        if (overlayView?.background is GradientDrawable) {
+            bgDrawable = overlayView?.background as GradientDrawable
+        }
         applyBackgroundStyle()
         applyPadding()
 
@@ -653,17 +656,9 @@ class GameBar private constructor(context: Context) {
 
         if (splitMode == "side_by_side") {
             layout.orientation = LinearLayout.HORIZONTAL
-            if (overlayFormat == "minimal") {
-                for (i in statViews.indices) {
-                    layout.addView(statViews[i])
-                    if (i < statViews.size - 1) {
-                        layout.addView(createDotView())
-                    }
-                }
-            } else {
-                for (view in statViews) {
-                    layout.addView(view)
-                }
+            // No separator dots in new design, just spacing handled by padding
+            for (view in statViews) {
+                layout.addView(view)
             }
         } else {
             layout.orientation = LinearLayout.VERTICAL
@@ -725,203 +720,56 @@ class GameBar private constructor(context: Context) {
     }
 
     private fun buildCpuFreqView(freqs: List<String>): View {
-        val freqContainer = LinearLayout(context).apply {
-            orientation = LinearLayout.HORIZONTAL
-        }
-
-        val spacingPx = dpToPx(context, itemSpacingDp)
-        val outerLp = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-        ).apply {
-            setMargins(spacingPx, spacingPx / 2, spacingPx, spacingPx / 2)
-        }
-        freqContainer.layoutParams = outerLp
-
-        if (overlayFormat == "full") {
-            val labelTv = TextView(context).apply {
-                setTextSize(TypedValue.COMPLEX_UNIT_SP, textSizeSp.toFloat())
-                try {
-                    setTextColor(Color.parseColor(titleColorHex))
-                } catch (e: Exception) {
-                    setTextColor(Color.WHITE)
-                }
-                setTypeface(this@GameBar.getTypeface(), Typeface.NORMAL)
-                text = "CPU Freq "
-            }
-            freqContainer.addView(labelTv)
-        }
-
-        val verticalFreqs = LinearLayout(context).apply {
-            orientation = LinearLayout.VERTICAL
-        }
-
-        for (freqLine in freqs) {
-            val lineLayout = LinearLayout(context).apply {
-                orientation = LinearLayout.HORIZONTAL
-            }
-
-            val freqTv = TextView(context).apply {
-                setTextSize(TypedValue.COMPLEX_UNIT_SP, textSizeSp.toFloat())
-                try {
-                    setTextColor(Color.parseColor(valueColorHex))
-                } catch (e: Exception) {
-                    setTextColor(Color.WHITE)
-                }
-                setTypeface(this@GameBar.getTypeface(), Typeface.NORMAL)
-                text = freqLine
-            }
-
-            lineLayout.addView(freqTv)
-
-            val lineLp = LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-            ).apply {
-                setMargins(spacingPx, spacingPx / 4, spacingPx, spacingPx / 4)
-            }
-            lineLayout.layoutParams = lineLp
-
-            verticalFreqs.addView(lineLayout)
-        }
-
-        freqContainer.addView(verticalFreqs)
-        return freqContainer
+        return createStatLine("CPU Freq", freqs.joinToString("\n"))
     }
 
     private fun buildFpsView(fpsStats: List<String>): View {
-        val fpsContainer = LinearLayout(context).apply {
-            orientation = LinearLayout.HORIZONTAL
+        // Use a multiline stat item for advanced FPS
+        // Extract values from the list strings "Label: Value"
+        val sb = StringBuilder()
+        for (stat in fpsStats) {
+             if (sb.isNotEmpty()) sb.append("\n")
+             sb.append(stat)
         }
-
-        val spacingPx = dpToPx(context, itemSpacingDp)
-        val outerLp = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-        ).apply {
-            setMargins(spacingPx, spacingPx / 2, spacingPx, spacingPx / 2)
-        }
-        fpsContainer.layoutParams = outerLp
-
-        if (overlayFormat == "full") {
-            val labelTv = TextView(context).apply {
-                setTextSize(TypedValue.COMPLEX_UNIT_SP, textSizeSp.toFloat())
-                try {
-                    setTextColor(Color.parseColor(titleColorHex))
-                } catch (e: Exception) {
-                    setTextColor(Color.WHITE)
-                }
-                setTypeface(this@GameBar.getTypeface(), Typeface.NORMAL)
-                text = "FPS Stats "
-            }
-            fpsContainer.addView(labelTv)
-        }
-
-        val verticalStats = LinearLayout(context).apply {
-            orientation = LinearLayout.VERTICAL
-        }
-
-        for (statLine in fpsStats) {
-            val lineLayout = LinearLayout(context).apply {
-                orientation = LinearLayout.HORIZONTAL
-            }
-
-            val statTv = TextView(context).apply {
-                setTextSize(TypedValue.COMPLEX_UNIT_SP, textSizeSp.toFloat())
-                try {
-                    setTextColor(Color.parseColor(valueColorHex))
-                } catch (e: Exception) {
-                    setTextColor(Color.WHITE)
-                }
-                setTypeface(this@GameBar.getTypeface(), Typeface.NORMAL)
-                text = statLine
-            }
-
-            lineLayout.addView(statTv)
-
-            val lineLp = LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-            ).apply {
-                setMargins(spacingPx, spacingPx / 4, spacingPx, spacingPx / 4)
-            }
-            lineLayout.layoutParams = lineLp
-
-            verticalStats.addView(lineLayout)
-        }
-
-        fpsContainer.addView(verticalStats)
-        return fpsContainer
+        return createStatLine("", sb.toString())
     }
 
-    private fun createStatLine(title: String, rawValue: String): LinearLayout {
-        val lineLayout = LinearLayout(context).apply {
-            orientation = LinearLayout.HORIZONTAL
+    private fun createStatLine(title: String, rawValue: String): View {
+        val view = LayoutInflater.from(context).inflate(R.layout.gamebar_stat_item, rootLayout, false)
+        val tvLabel = view.findViewById<TextView>(R.id.stat_label)
+        val tvValue = view.findViewById<TextView>(R.id.stat_value)
+        val icon = view.findViewById<android.widget.ImageView>(R.id.stat_icon)
+
+        // Basic styling
+        tvLabel.setTextSize(TypedValue.COMPLEX_UNIT_SP, (textSizeSp - 2).toFloat()) // Label smaller
+        tvValue.setTextSize(TypedValue.COMPLEX_UNIT_SP, textSizeSp.toFloat())
+
+        try {
+            tvLabel.setTextColor(Color.parseColor(titleColorHex))
+            tvValue.setTextColor(Color.parseColor(valueColorHex))
+            icon.setColorFilter(Color.parseColor(titleColorHex))
+        } catch (e: Exception) {
+            tvLabel.setTextColor(Color.WHITE)
+            tvValue.setTextColor(Color.WHITE)
+            icon.setColorFilter(Color.WHITE)
         }
 
-        if (overlayFormat == "full") {
-            val tvTitle = TextView(context).apply {
-                setTextSize(TypedValue.COMPLEX_UNIT_SP, textSizeSp.toFloat())
-                try {
-                    setTextColor(Color.parseColor(titleColorHex))
-                } catch (e: Exception) {
-                    setTextColor(Color.WHITE)
-                }
-                setTypeface(this@GameBar.getTypeface(), Typeface.NORMAL)
-                text = if (title.isEmpty()) "" else "$title "
-            }
-
-            val tvValue = TextView(context).apply {
-                setTextSize(TypedValue.COMPLEX_UNIT_SP, textSizeSp.toFloat())
-                try {
-                    setTextColor(Color.parseColor(valueColorHex))
-                } catch (e: Exception) {
-                    setTextColor(Color.WHITE)
-                }
-                setTypeface(this@GameBar.getTypeface(), Typeface.NORMAL)
-                text = rawValue
-            }
-
-            lineLayout.addView(tvTitle)
-            lineLayout.addView(tvValue)
+        if (title.isEmpty()) {
+            tvLabel.visibility = View.GONE
         } else {
-            val tvMinimal = TextView(context).apply {
-                setTextSize(TypedValue.COMPLEX_UNIT_SP, textSizeSp.toFloat())
-                try {
-                    setTextColor(Color.parseColor(valueColorHex))
-                } catch (e: Exception) {
-                    setTextColor(Color.WHITE)
-                }
-                setTypeface(this@GameBar.getTypeface(), Typeface.NORMAL)
-                text = rawValue
-            }
-            lineLayout.addView(tvMinimal)
+            tvLabel.text = title
+            tvLabel.visibility = View.VISIBLE
         }
+        
+        tvValue.text = rawValue
+        
+        // Hide icon for now as we don't have distinct icons per stat type passed in yet
+        icon.visibility = View.GONE
 
-        val spacingPx = dpToPx(context, itemSpacingDp)
-        val lp = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-        ).apply {
-            setMargins(spacingPx, spacingPx / 2, spacingPx, spacingPx / 2)
-        }
-        lineLayout.layoutParams = lp
-
-        return lineLayout
+        return view
     }
 
-    private fun createDotView(): View {
-        return TextView(context).apply {
-            setTextSize(TypedValue.COMPLEX_UNIT_SP, textSizeSp.toFloat())
-            try {
-                setTextColor(Color.parseColor(valueColorHex))
-            } catch (e: Exception) {
-                setTextColor(Color.WHITE)
-            }
-            setTypeface(this@GameBar.getTypeface(), Typeface.NORMAL)
-            text = " . "
-        }
-    }
+    // createDotView removed as it's not used anymore
 
     // Public setter methods for feature toggles
     fun setShowBatteryTemp(show: Boolean) { showBatteryTemp = show }
@@ -969,58 +817,7 @@ class GameBar private constructor(context: Context) {
         applyBackgroundStyle()
     }
 
-    fun updateFont(fontPath: String) {
-        loadCustomFont(fontPath)
-        // Apply new typeface in-place to avoid overlay flicker
-        if (isShowing) {
-            applyTypefaceToOverlay()
-        }
-    }
-
-    private fun loadCustomFont(fontPath: String) {
-        customTypeface = if (fontPath == "default" || fontPath.isEmpty()) {
-            null
-        } else {
-            try {
-                Typeface.createFromAsset(context.assets, fontPath)
-            } catch (e: Exception) {
-                android.util.Log.e("GameBar", "Failed to load font: $fontPath - ${e.message}")
-                null
-            }
-        }
-    }
-
-    private fun getTypeface(): Typeface {
-        return customTypeface ?: Typeface.DEFAULT
-    }
-
-    private fun applyTypefaceToOverlay() {
-        val root = rootLayout ?: return
-        val targetTypeface = getTypeface()
-        fun traverse(view: View) {
-            when (view) {
-                is TextView -> view.setTypeface(targetTypeface, Typeface.NORMAL)
-                is ViewGroup -> {
-                    for (i in 0 until view.childCount) {
-                        traverse(view.getChildAt(i))
-                    }
-                }
-            }
-        }
-        try {
-            traverse(root)
-            // Ensure layout is refreshed without rebuilding
-            layoutParams?.let { lp ->
-                overlayView?.let { view ->
-                    try {
-                        windowManager.updateViewLayout(view, lp)
-                    } catch (_: Exception) { }
-                }
-            }
-        } catch (e: Exception) {
-            android.util.Log.e("GameBar", "Error applying typeface to overlay: ${e.message}")
-        }
-    }
+    // Font methods removed
 
     fun updateOverlayFormat(format: String) {
         overlayFormat = format
@@ -1089,8 +886,13 @@ class GameBar private constructor(context: Context) {
 
     private fun applyBackgroundStyle() {
         // Ensure we have a valid bgDrawable
-        if (bgDrawable == null) {
-            bgDrawable = GradientDrawable()
+        if (bgDrawable == null && overlayView != null) {
+            val bg = overlayView?.background
+            if (bg is GradientDrawable) {
+                bgDrawable = bg
+            } else {
+                 bgDrawable = GradientDrawable()
+            }
         }
         
         // Apply background color with proper alpha

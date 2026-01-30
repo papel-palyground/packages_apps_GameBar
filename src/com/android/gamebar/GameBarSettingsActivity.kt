@@ -15,10 +15,10 @@ import android.provider.Settings
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
-import com.android.settingslib.collapsingtoolbar.CollapsingToolbarBaseActivity
+import androidx.appcompat.app.AppCompatActivity
 import com.android.gamebar.R
 
-class GameBarSettingsActivity : CollapsingToolbarBaseActivity() {
+class GameBarSettingsActivity : AppCompatActivity() {
 
     private val LAUNCHER_ALIAS_NAME = "com.android.gamebar.GameBarLauncher"
     
@@ -32,7 +32,18 @@ class GameBarSettingsActivity : CollapsingToolbarBaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game_bar)
-        title = getString(R.string.game_bar_title)
+        
+        val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        
+        val collapsingToolbar = findViewById<com.google.android.material.appbar.CollapsingToolbarLayout>(R.id.collapsing_toolbar)
+        collapsingToolbar.title = getString(R.string.game_bar_title)
+
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.content_frame, GameBarFragment())
+                .commit()
+        }
 
         if (!Settings.canDrawOverlays(this)) {
             val intent = Intent(
@@ -64,53 +75,13 @@ class GameBarSettingsActivity : CollapsingToolbarBaseActivity() {
         }
     }
     
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.gamebar_settings_menu, menu)
-        val showLauncherIconItem = menu.findItem(R.id.menu_show_launcher_icon)
-        val prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-        showLauncherIconItem.isChecked = prefs.getBoolean(KEY_SHOW_LAUNCHER_ICON, true)
-        return true
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // ...
     }
     
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.menu_show_launcher_icon -> {
-                val prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-                val isChecked = !item.isChecked
-                item.isChecked = isChecked
-                prefs.edit().putBoolean(KEY_SHOW_LAUNCHER_ICON, isChecked).apply()
-                setLauncherIconEnabled(isChecked)
-                true
-            }
-            R.id.menu_log_monitor -> {
-                try {
-                    startActivity(Intent(this, GameBarLogActivity::class.java))
-                } catch (e: Exception) {
-                    Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_LONG).show()
-                    e.printStackTrace()
-                }
-                true
-            }
-            R.id.menu_open_external_log -> {
-                openExternalLogFile()
-                true
-            }
-            R.id.menu_user_guide -> {
-                try {
-                    val url = getString(R.string.game_bar_user_guide_url)
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-                    startActivity(intent)
-                } catch (e: Exception) {
-                    Toast.makeText(this, "Unable to open user guide: ${e.message}", Toast.LENGTH_LONG).show()
-                    e.printStackTrace()
-                }
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
-
-    private fun setLauncherIconEnabled(enabled: Boolean) {
+    // Public methods to be called from Fragment
+    fun setLauncherIconEnabled(enabled: Boolean) {
         val componentName = ComponentName(this, LAUNCHER_ALIAS_NAME)
         val state = if (enabled) {
             PackageManager.COMPONENT_ENABLED_STATE_ENABLED
@@ -120,7 +91,7 @@ class GameBarSettingsActivity : CollapsingToolbarBaseActivity() {
         packageManager.setComponentEnabledSetting(componentName, state, PackageManager.DONT_KILL_APP)
     }
     
-    private fun openExternalLogFile() {
+    fun openExternalLogFile() {
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
             addCategory(Intent.CATEGORY_OPENABLE)
             type = "text/*"
