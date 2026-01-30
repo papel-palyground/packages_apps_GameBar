@@ -20,13 +20,14 @@ import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.PopupMenu
-import android.widget.RadioButton
-import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.button.MaterialButtonToggleGroup
+import com.google.android.material.textfield.TextInputEditText
 import com.android.gamebar.R
 import java.io.File
 import java.text.SimpleDateFormat
@@ -34,13 +35,13 @@ import java.util.*
 
 class GameBarLogFragment : Fragment(), GameDataExport.CaptureStateListener, PerAppLogManager.PerAppStateListener {
 
-    private lateinit var searchBar: EditText
-    private lateinit var startCaptureButton: Button
-    private lateinit var stopCaptureButton: Button
-    private lateinit var manualLogsButton: Button
-    private lateinit var logTypeRadioGroup: RadioGroup
-    private lateinit var globalLoggingRadio: RadioButton
-    private lateinit var perAppLoggingRadio: RadioButton
+    private lateinit var searchBar: TextInputEditText
+    private lateinit var startCaptureButton: MaterialButton
+    private lateinit var stopCaptureButton: MaterialButton
+    private lateinit var manualLogsButton: MaterialButton
+    private lateinit var logTypeToggleGroup: MaterialButtonToggleGroup
+    private lateinit var globalLoggingButton: MaterialButton
+    private lateinit var perAppLoggingButton: MaterialButton
     private lateinit var logHistoryRecyclerView: RecyclerView
     private lateinit var logHistoryAdapter: LogHistoryAdapter
     private lateinit var perAppLogAdapter: PerAppLogAdapter
@@ -102,9 +103,9 @@ class GameBarLogFragment : Fragment(), GameDataExport.CaptureStateListener, PerA
         startCaptureButton = view.findViewById(R.id.btn_start_capture)
         stopCaptureButton = view.findViewById(R.id.btn_stop_capture)
         manualLogsButton = view.findViewById(R.id.btn_manual_logs)
-        logTypeRadioGroup = view.findViewById(R.id.rg_log_type)
-        globalLoggingRadio = view.findViewById(R.id.rb_global_logging)
-        perAppLoggingRadio = view.findViewById(R.id.rb_per_app_logging)
+        logTypeToggleGroup = view.findViewById(R.id.rg_log_type)
+        globalLoggingButton = view.findViewById(R.id.rb_global_logging)
+        perAppLoggingButton = view.findViewById(R.id.rb_per_app_logging)
         logHistoryRecyclerView = view.findViewById(R.id.rv_log_history)
     }
 
@@ -174,10 +175,12 @@ class GameBarLogFragment : Fragment(), GameDataExport.CaptureStateListener, PerA
             showManualLogsDialog()
         }
         
-        logTypeRadioGroup.setOnCheckedChangeListener { _, checkedId ->
-            when (checkedId) {
-                R.id.rb_global_logging -> switchToGlobalMode()
-                R.id.rb_per_app_logging -> switchToPerAppMode()
+        logTypeToggleGroup.addOnButtonCheckedListener { _, checkedId, isChecked ->
+            if (isChecked) {
+                when (checkedId) {
+                    R.id.rb_global_logging -> switchToGlobalMode()
+                    R.id.rb_per_app_logging -> switchToPerAppMode()
+                }
             }
         }
         
@@ -559,16 +562,16 @@ class GameBarLogFragment : Fragment(), GameDataExport.CaptureStateListener, PerA
     }
     
     private fun initializeUIState() {
-        // Set radio button state based on loaded mode
+        // Set toggle button state based on loaded mode
         when (currentLoggingMode) {
             GameDataExport.LoggingMode.GLOBAL -> {
-                globalLoggingRadio.isChecked = true
+                logTypeToggleGroup.check(R.id.rb_global_logging)
                 logHistoryRecyclerView.adapter = logHistoryAdapter
                 searchBar.hint = getString(R.string.hint_search_logs)
                 loadLogHistory()
             }
             GameDataExport.LoggingMode.PER_APP -> {
-                perAppLoggingRadio.isChecked = true
+                logTypeToggleGroup.check(R.id.rb_per_app_logging)
                 logHistoryRecyclerView.adapter = perAppLogAdapter
                 searchBar.hint = getString(R.string.hint_search_apps)
                 updatePerAppAdapterStates()
