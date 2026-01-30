@@ -75,15 +75,15 @@
 
     <com.android.gamebar.ExpandablePreferenceCategory android:key="category_gesture_controls" android:title="Overlay Gesture Controls" android:dependency="game_bar_enable">
 
-        <SwitchPreferenceCompat android:key="game_bar_single_tap_enable" android:title="Enable Single Tap" android:summary="Tap once to perform an action" android:defaultValue="true" />
+        <SwitchPreferenceCompat android:key="game_bar_single_tap_enable" android:title="Enable Single Tap" android:summary="Tap once to perform an action" android:icon="@drawable/ic_pref_single_tap_circle" android:defaultValue="true" />
 
         <ListPreference android:key="game_bar_single_tap_function" android:title="Single Tap Function" android:summary="Choose what happens on single tap" android:entries="@array/gesture_function_entries" android:entryValues="@array/gesture_function_values" android:defaultValue="toggle_format" />
 
-        <SwitchPreferenceCompat android:key="game_bar_doubletap_enable" android:title="Enable Double Tap" android:summary="Double-tap to perform an action" android:defaultValue="true" />
+        <SwitchPreferenceCompat android:key="game_bar_doubletap_enable" android:title="Enable Double Tap" android:summary="Double-tap to perform an action" android:icon="@drawable/ic_pref_double_tap_circle" android:defaultValue="true" />
 
         <ListPreference android:key="game_bar_doubletap_function" android:title="Double Tap Function" android:summary="Choose what happens on double tap" android:entries="@array/gesture_function_entries" android:entryValues="@array/gesture_function_values" android:defaultValue="capture_logs" />
 
-        <SwitchPreferenceCompat android:key="game_bar_longpress_enable" android:title="Enable Long Press" android:summary="Long-press to perform an action" android:defaultValue="true" />
+        <SwitchPreferenceCompat android:key="game_bar_longpress_enable" android:title="Enable Long Press" android:summary="Long-press to perform an action" android:icon="@drawable/ic_pref_long_press_circle" android:defaultValue="true" />
 
         <ListPreference android:key="game_bar_longpress_function" android:title="Long Press Function" android:summary="Choose what happens on long press" android:entries="@array/gesture_function_entries" android:entryValues="@array/gesture_function_values" android:defaultValue="load_preset" />
 

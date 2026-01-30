@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     SPDX-FileCopyrightText: 2025 kenway214
+     SPDX-License-Identifier: Apache-2.0
+-->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/bg_icon_circle" />
+    <item android:drawable="@drawable/ic_pref_long_press" android:gravity="center" android:width="20dp" android:height="20dp" />
+</layer-list>
