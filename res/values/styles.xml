@@ -1,9 +1,3 @@
-<!--
-     SPDX-FileCopyrightText: 2025 kenway214
-     SPDX-FileCopyrightText: 2017 Jared Rummler
-     SPDX-License-Identifier: Apache-2.0
--->
-
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
   <style name="gamebar_ColorPickerViewStyle">
@@ -19,6 +13,21 @@
     <item name="colorSecondary">@color/settingslib_expressive_color_slider_track_inactive</item>
     <item name="android:windowLightStatusBar">true</item>
     <item name="android:statusBarColor">@android:color/transparent</item>
+    <item name="android:navigationBarColor">@android:color/transparent</item>
+    <item name="android:windowTranslucentNavigation">false</item>
+  </style>
+
+  <!-- Material 3 Expressive Text Styles -->
+  <style name="TextAppearance.GameBar.HeadlineLarge" parent="TextAppearance.Material3.HeadlineLarge">
+    <item name="android:textSize">34sp</item>
+    <item name="android:fontFamily">sans-serif-medium</item>
+    <item name="android:textColor">?android:attr/textColorPrimary</item>
+  </style>
+
+  <style name="TextAppearance.GameBar.TitleMedium" parent="TextAppearance.Material3.TitleMedium">
+    <item name="android:textSize">20sp</item>
+    <item name="android:fontFamily">sans-serif-medium</item>
+    <item name="android:textColor">?android:attr/textColorPrimary</item>
   </style>
 
 </resources>
